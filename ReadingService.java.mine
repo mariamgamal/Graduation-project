@@ -1,0 +1,106 @@
+package com.obdgp.Services;
+
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.obdgp.Daos.*;
+import com.obdgp.Models.TableReading;
+
+
+public class ReadingService {
+
+
+	TablereadingDao tro= new TablereadingDao();
+
+	public List<String> getTblreading(String id ) throws SQLException{
+		List<String>  reading = new ArrayList<String>();
+		List<TableReading> devList = tro.getReadingsFromDB(id);
+		if(devList.isEmpty() )
+		{
+			reading.add("No Readings found!!!");
+		}
+		else
+		{
+			for(int i=0 ; i<devList.size() ; i++)
+			{
+				reading.add("SPEED="+devList.get(i).getSPEED());
+				reading.add("RPM="+devList.get(i).getRPM());
+				reading.add("ENGINE_LOAD = "+devList.get(i).getENGINE_LOAD());
+				reading.add("COOLANT_TEMP = "+devList.get(i).getCOOLANT_TEMP());
+				reading.add("SHORT_FUEL_TRIM_1 = "+devList.get(i).getSHORT_FUEL_TRIM_1());
+				reading.add("INTAKE_TEMP = "+devList.get(i).getINTAKE_TEMP());
+				reading.add("INTAKE_PRESSURE = "+devList.get(i).getINTAKE_PRESSURE());
+				reading.add("THROTTLE_POS = "+devList.get(i).getTHROTTLE_POS());
+			}
+		}
+
+		return reading;
+	}
+	
+	
+	public List<String> getImportantReadings(String id ) throws SQLException{
+		List<String>  reading = new ArrayList<String>();
+		List<TableReading> devList = tro.getImportantReadingsFromDB(id);
+		if(devList.isEmpty() )
+		{
+			reading.add("NO Important Readings found!!!");
+		}
+		else
+		{
+			for(int i=0 ; i<devList.size() ; i++)
+			{
+				//reading.add("Reading"+i+"="+devList.get(i).getRead1());
+				reading.add("SPEED = "+devList.get(i).getSPEED());
+				reading.add("RPM = "+devList.get(i).getRPM());
+				reading.add("ENGINE_LOAD = "+devList.get(i).getENGINE_LOAD());
+				reading.add("COOLANT_TEMP = "+devList.get(i).getCOOLANT_TEMP());
+				reading.add("SHORT_FUEL_TRIM_1 = "+devList.get(i).getSHORT_FUEL_TRIM_1());
+				reading.add("INTAKE_TEMP = "+devList.get(i).getINTAKE_TEMP());
+				reading.add("INTAKE_PRESSURE = "+devList.get(i).getINTAKE_PRESSURE());
+				reading.add("THROTTLE_POS = "+devList.get(i).getTHROTTLE_POS());
+			
+			}
+		}
+
+		return reading;
+	}
+	
+	public void Insertdata(String id) throws SQLException
+	{
+		tro.InsertTBReadings(id);
+		
+	}
+	
+	public String[][] getyearlyd(String y1,String y2,String id,String param , int size1, int size2) throws SQLException{
+		
+
+	   	 String[][] reading = new String[size1+1][size2];
+		reading= tro.getChartYdata(y1,y2,id,param);
+	
+//		if(out==null )
+//		{
+//			reading[0][0]="-8000";
+//		}
+//		else
+//		{
+//			for(int i=0 ; i<10 ; i++)
+//			{
+//				reading.add("Reading"+i+"="+devList.get(i).getRead1());
+//				//reading.add("Reading2 = "+devList.get(i).getRead2());
+//			}
+//		}
+		
+		System.out.println("Reading service output");
+			for(int i=0;i<size1+1;i++)
+				{for(int j=0;j<size2;j++)
+				{	System.out.println(reading[i][j]);}
+				}
+		return reading;
+	}
+	
+	
+	
+	
+}
